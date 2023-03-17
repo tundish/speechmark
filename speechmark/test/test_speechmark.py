@@ -35,10 +35,6 @@ __doc__ = f"""
 
 """
 
-# block = cue + dialogue
-# cue = persona .directive @ entity, :mode ? parameters # fragment
-
-
 # Ex 2
 """
 <blockquote>
@@ -49,19 +45,6 @@ __doc__ = f"""
 </blockquote>
 """
 
-# Plugins must allow for transformation of links, eg:
-"""
-<nav>
-<ul>
-<li style="animation-delay: 22.80s; animation-duration: 3.70s">
-<form role="form" action="False" method="GET" name="contents">
-
-</form></li>
-</ul>
-</nav>
-"""
-
-
 # Ordered list marker: '[0-9a-zA-Z].' (remember fragment reference)
 # Unordered list marker: '+'
 # <em>:  one or more *
@@ -70,8 +53,6 @@ __doc__ = f"""
 # <a>: [label](url)
 
 Head = ("propose", "confirm", "counter", "abandon", "condemn", "declare")
-
-
 Hand = ("decline", "suggest", "promise", "disavow", "deliver")
 
 
