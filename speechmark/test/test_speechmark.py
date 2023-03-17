@@ -255,7 +255,7 @@ class Syntax(unittest.TestCase):
     SpeechMark tries not to throw anything away. You might not want that behaviour. Specifically,
     you may prefer to remove lines of comment from the HTML5 output.
 
-    Since the output is line-based, it's a simple matter to strip out those lines using your favourite prgramming
+    Since the output is line-based, it's a simple matter to strip out those lines using your favourite programming
     language or command line tools.
 
     Extending
