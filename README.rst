@@ -643,7 +643,7 @@ There may be multiple fragments. The first begins with a ``#`` symbol.
 All semantics are those of `Web URLs <https://url.spec.whatwg.org>`_.
 The fragments appear at the end of any cue mark.
 The fragments must be stored in the ``data-fragments`` attribute of the cite tag.
-They retain all delimiters. The fragments value must be appropriately escaped. 
+They retain all delimiters. The fragments value must be appropriately escaped.
 
 
 Role with directive and fragment::

@@ -309,21 +309,24 @@ class Syntax(unittest.TestCase):
     or more paragraphs. A block may contain a list. Every list item must contain a paragraph.
 
     """
+
     examples = []
 
     def example(label=""):
         def wrapper(fn):
             def inner(self, *args, **kwargs):
                 return fn(self, **data)
+
             doc = fn.__doc__ or ""
             text, toml = re.split(r"#\W*TOML\n", doc, maxsplit=1)
             data = tomllib.loads(toml)
             Syntax.examples.append((label, text, data, fn))
             fn.__doc__ = text
             return inner
+
         return wrapper
 
-    def check(self, markup: dict={}, output=""):
+    def check(self, markup: dict = {}, output=""):
         sm = SpeechMark()
         for n, (tag, text) in enumerate(markup.items()):
             text = textwrap.dedent(text).strip()
@@ -345,7 +348,7 @@ class EmphasisTests(Syntax):
     """
 
     @Syntax.example(label="2.01")
-    def test_minimal_emphasis(self, markup: dict={}, output=""):
+    def test_minimal_emphasis(self, markup: dict = {}, output=""):
         """
         Emphasis is added using pairs of asterisks.
 
@@ -360,7 +363,7 @@ class EmphasisTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="2.02")
-    def test_multiple_emphasis(self, markup: dict={}, output=""):
+    def test_multiple_emphasis(self, markup: dict = {}, output=""):
         """
         There may be multiple emphasized phrases on a line.
 
@@ -375,11 +378,13 @@ class EmphasisTests(Syntax):
         return self.check(markup, output)
 
     def test_cornercases_abutting_emphasis(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote>
         <p><em>Definitely</em><em>Definitely!</em></p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("*Definitely**Definitely!*")
         self.compare(rv, expected, rv)
@@ -387,7 +392,7 @@ class EmphasisTests(Syntax):
 
 class SignificanceTests(Syntax):
     @Syntax.example(label="2.03")
-    def test_minimal_significance(self, markup: dict={}, output=""):
+    def test_minimal_significance(self, markup: dict = {}, output=""):
         """
         Strong text is denoted with underscores.
 
@@ -402,7 +407,7 @@ class SignificanceTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="2.04")
-    def test_multiple_significance(self, markup: dict={}, output=""):
+    def test_multiple_significance(self, markup: dict = {}, output=""):
         """
         There may be multiple snippets of significant text on one line.
 
@@ -417,22 +422,23 @@ class SignificanceTests(Syntax):
         return self.check(markup, output)
 
     def test_cornercases_code(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote>
         <p>
         <strong>Warning</strong><strong>Warning</strong>!
         </p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("_Warning__Warning_!")
         self.compare(rv, expected, rv)
 
 
 class CodeTests(Syntax):
-
     @Syntax.example(label="2.05")
-    def test_single_code(self, markup: dict={}, output=""):
+    def test_single_code(self, markup: dict = {}, output=""):
         """
         Code snippets are defined between backticks.
 
@@ -447,7 +453,7 @@ class CodeTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="2.06")
-    def test_multiple_code(self, markup: dict={}, output=""):
+    def test_multiple_code(self, markup: dict = {}, output=""):
         """
         There may be multiple code snippets on a line.
 
@@ -462,21 +468,25 @@ class CodeTests(Syntax):
         return self.check(markup, output)
 
     def test_cornercases_code(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote>
         <p><code>8.8.8.8</code></p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("`8.8.8.8`")
         self.compare(rv, expected, rv)
 
     def test_cornercases_abutted_code(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote>
         <p><code>git</code><code>log</code></p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("`git``log`")
         self.compare(rv, expected, rv)
@@ -497,7 +507,7 @@ class LinkTests(Syntax):
         self.assertEqual("https://python.org", match.groupdict().get("link"))
 
     @Syntax.example(label="3.01")
-    def test_single_link(self, markup: dict={}, output=""):
+    def test_single_link(self, markup: dict = {}, output=""):
         """
         Hyperlinks are defined by placing link text within square brackets and the link destination
         in parentheses. There must be no space between them.
@@ -514,7 +524,7 @@ class LinkTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="3.02")
-    def test_multiple_links(self, markup: dict={}, output=""):
+    def test_multiple_links(self, markup: dict = {}, output=""):
         """
         There may be multiple hyperlinks on a line.
 
@@ -529,21 +539,25 @@ class LinkTests(Syntax):
         return self.check(markup, output)
 
     def test_cornercases_links_with_spaces(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote>
         <p>[Python] (https://python.org)</p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("[Python] (https://python.org)")
         self.compare(rv, expected, rv)
 
     def test_cornercases_abutting_links(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote>
         <p><a href="https://python.org">Python</a><a href="https://python.org">Python</a></p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("[Python](https://python.org)[Python](https://python.org)")
         self.compare(rv, expected, rv)
@@ -557,7 +571,7 @@ class CommentTests(Syntax):
     """
 
     @Syntax.example(label="4.01")
-    def test_single_comment(self, markup: dict={}, output=""):
+    def test_single_comment(self, markup: dict = {}, output=""):
         """
         Any line beginning with a "#" is a comment.
         It is output in its entirety (including delimiter) as an HTML comment.
@@ -581,7 +595,7 @@ class UnorderedListTests(Syntax):
     """
 
     @Syntax.example(label="5.01")
-    def test_minimal_list(self, markup: dict={}, output=""):
+    def test_minimal_list(self, markup: dict = {}, output=""):
         """
         A line beginning with a '+' character constitutes an
         item in an unordered list.
@@ -604,9 +618,8 @@ class UnorderedListTests(Syntax):
 
 
 class OrderedListTests(Syntax):
-
     @Syntax.example(label="5.02")
-    def test_numbered_list(self, markup: dict={}, output=""):
+    def test_numbered_list(self, markup: dict = {}, output=""):
         """
         Ordered lists have lines which begin with one or more digits. Then a dot, and at least one space.
 
@@ -627,7 +640,7 @@ class OrderedListTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="5.03")
-    def test_zeropadded_list(self, markup: dict={}, output=""):
+    def test_zeropadded_list(self, markup: dict = {}, output=""):
         """
         Ordered list numbering is exactly as declared. No normalization is performed.
 
@@ -649,9 +662,15 @@ class OrderedListTests(Syntax):
 
     def test_list_matching_positive(self):
         examples = [
-            "+Hat", "+ Hat", "+ <Hat>",
-            "1.Hat", "1. Hat", "1. <Hat>",
-            "01.Hat", "01. Hat", "01. <Hat>",
+            "+Hat",
+            "+ Hat",
+            "+ <Hat>",
+            "1.Hat",
+            "1. Hat",
+            "1. <Hat>",
+            "01.Hat",
+            "01. Hat",
+            "01. <Hat>",
         ]
         sm = SpeechMark()
         for line in examples:
@@ -662,7 +681,9 @@ class OrderedListTests(Syntax):
                 self.assertEqual(1, len(d))
 
     def test_list_matching_negative(self):
-        examples = [ "<> +", ]
+        examples = [
+            "<> +",
+        ]
         sm = SpeechMark()
         for line in examples:
             with self.subTest(line=line):
@@ -687,7 +708,7 @@ class CueTests(Syntax):
     """
 
     @Syntax.example(label="6.02")
-    def test_empty_cue(self, markup: dict={}, output=""):
+    def test_empty_cue(self, markup: dict = {}, output=""):
         """
         All components of a cue are optional.
 
@@ -702,7 +723,7 @@ class CueTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="6.03")
-    def test_role_only_cue(self, markup: dict={}, output=""):
+    def test_role_only_cue(self, markup: dict = {}, output=""):
         """
         It is recommended that roles be stated in upper case.
         When a role is stated, a ``cite`` element must be generated.
@@ -721,7 +742,7 @@ class CueTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="6.04")
-    def test_role_with_mode(self, markup: dict={}, output=""):
+    def test_role_with_mode(self, markup: dict = {}, output=""):
         """
         A mode is preceded by a colon. It is stated after any role.
         When a mode is stated, a ``cite`` element must be generated.
@@ -741,7 +762,7 @@ class CueTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="6.05")
-    def test_role_with_directive(self, markup: dict={}, output=""):
+    def test_role_with_directive(self, markup: dict = {}, output=""):
         """
         There may be multiple directives, each preceded by a dot. They are stated after any role.
         When a directive is stated, a ``cite`` element must be generated.
@@ -761,7 +782,7 @@ class CueTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="6.06")
-    def test_role_with_recipients(self, markup: dict={}, output=""):
+    def test_role_with_recipients(self, markup: dict = {}, output=""):
         """
         When a directive is stated, a recipient list may follow it. A recipient list begins with a ``@`` symbol.
         The items in the list are separated by commas.
@@ -781,7 +802,7 @@ class CueTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="6.07")
-    def test_parameters_only(self, markup: dict={}, output=""):
+    def test_parameters_only(self, markup: dict = {}, output=""):
         """
         A parameter list begins with a ``?`` symbol. It consists of ``key=value`` pairs separated by ampersands.
         Should a directive be stated, any parameter list must come after it.
@@ -800,13 +821,13 @@ class CueTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example(label="6.08")
-    def test_directive_and_fragment(self, markup: dict={}, output=""):
+    def test_directive_and_fragment(self, markup: dict = {}, output=""):
         """
         There may be multiple fragments. The first begins with a ``#`` symbol.
         All semantics are those of `Web URLs <https://url.spec.whatwg.org>`_.
         The fragments appear at the end of any cue mark.
         The fragments must be stored in the ``data-fragments`` attribute of the cite tag.
-        They retain all delimiters. The fragments value must be appropriately escaped. 
+        They retain all delimiters. The fragments value must be appropriately escaped.
 
         # TOML
         markup."Role with directive and fragment" =  '''
@@ -832,11 +853,13 @@ class CueTests(Syntax):
     def test_anonymous_cue(self):
         cue = ""
         line = f"<{cue}> Hello!"
-        expected = textwrap.dedent(f"""
+        expected = textwrap.dedent(
+            f"""
         <blockquote cite="&lt;&gt;">
         <p>Hello!</p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads(line)
         self.compare(rv, expected, rv)
@@ -844,12 +867,14 @@ class CueTests(Syntax):
     def test_simple_cue(self):
         cue = role = "GUEST"
         line = f"<{cue}> Hello?"
-        expected = textwrap.dedent(f"""
+        expected = textwrap.dedent(
+            f"""
         <blockquote cite="&lt;{role}&gt;">
         <cite data-role="GUEST">{role}</cite>
         <p>Hello?</p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads(line)
         self.compare(rv, expected, rv)
@@ -859,21 +884,26 @@ class CueTests(Syntax):
         mode = "says"
         cue = f"{role}:{mode}"
         line = f"<{cue}> Hello?"
-        expected = textwrap.dedent(f"""
+        expected = textwrap.dedent(
+            f"""
         <blockquote cite="&lt;{cue}&gt;">
         <cite data-role="{role}" data-mode=":{mode}">{role}</cite>
         <p>Hello?</p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads(line)
         self.compare(rv, expected, rv)
 
     def test_cue_matching_positive(self):
         examples = [
-            "<>", "<> Hi!",
-            "<role>", "<ROLE>",
-            "<role:mode>", "<ROLE:MODE>",
+            "<>",
+            "<> Hi!",
+            "<role>",
+            "<ROLE>",
+            "<role:mode>",
+            "<ROLE:MODE>",
             "<ROLE.d1.d2:mode>",
             "<ROLE:mode?p=0&q=a>",
             "<ROLE:mode#frag>",
@@ -890,10 +920,7 @@ class CueTests(Syntax):
                 self.assertEqual(5, len(d))
 
     def test_cue_matching_negative(self):
-        examples = [
-            "< >", "< >Hi!",
-            "<role >", "< ROLE>"
-        ]
+        examples = ["< >", "< >Hi!", "<role >", "< ROLE>"]
         sm = SpeechMark()
         for line in examples:
             with self.subTest(line=line):
@@ -902,8 +929,7 @@ class CueTests(Syntax):
 
 
 class ParagraphTests(Syntax):
-
-    def test_minimal_paragraph(self, markup: dict={}, output=""):
+    def test_minimal_paragraph(self, markup: dict = {}, output=""):
         """
         Simple strings are encapsulated in paragraphs.
 
@@ -917,7 +943,7 @@ class ParagraphTests(Syntax):
         """
         return self.check(markup, output)
 
-    def test_continuing_paragraph(self, markup: dict={}, output=""):
+    def test_continuing_paragraph(self, markup: dict = {}, output=""):
         """
         A paragraph continues until explicitly terminated.
 
@@ -934,7 +960,7 @@ class ParagraphTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example()
-    def test_multiple_paragraphs(self, markup: dict={}, output=""):
+    def test_multiple_paragraphs(self, markup: dict = {}, output=""):
         """
         A paragraph is terminated by a blank line.
 
@@ -953,18 +979,19 @@ class ParagraphTests(Syntax):
         return self.check(markup, output)
 
     def test_cornercases_code(self):
-        expected = textwrap.dedent("""
+        expected = textwrap.dedent(
+            """
         <blockquote cite="&lt;&gt;">
         <p>Hello!</p>
         </blockquote>
-        """)
+        """
+        )
         sm = SpeechMark()
         rv = sm.loads("<> Hello!")
         self.compare(rv, expected, rv)
 
 
 class EscapingTests(Syntax):
-
     def test_text_escaping(self):
         sm = SpeechMark()
         for char in ">&<":
@@ -983,9 +1010,8 @@ class EscapingTests(Syntax):
 
 
 class BlockTests(Syntax):
-
     @Syntax.example()
-    def test_multiple_paragraphs(self, markup: dict={}, output=""):
+    def test_multiple_paragraphs(self, markup: dict = {}, output=""):
         """
         A cue is used as an attribution of speech.
 
@@ -1009,7 +1035,7 @@ class BlockTests(Syntax):
         return self.check(markup, output)
 
     @Syntax.example()
-    def test_choice_lists(self, markup: dict={}, output=""):
+    def test_choice_lists(self, markup: dict = {}, output=""):
         """
         # TOML
         markup."Dialogue options" = '''
@@ -1041,7 +1067,7 @@ if __name__ == "__main__":
 
     examples = defaultdict(list)
     for label, text, data, fn in sorted(Syntax.examples):
-        info = dict(inspect.getmembers(fn)) # ["__self__"]["__class__"]
+        info = dict(inspect.getmembers(fn))  # ["__self__"]["__class__"]
         cls = globals().get(info["__qualname__"].split(".")[0])
         examples[cls].append((label, text, data, fn))
 
