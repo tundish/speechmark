@@ -261,7 +261,7 @@ class Syntax(unittest.TestCase):
     Extending
     ---------
 
-    Speechmark does not support extensions. There is no syntax to create custom tags.
+    SpeechMark does not support extensions. There is no syntax to create custom tags.
 
     However, if you need to transform the output before it gets to the web, you could utilise the
     ``<code>`` tag for that purpose.
