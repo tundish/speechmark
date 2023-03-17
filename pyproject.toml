@@ -5,7 +5,7 @@ name = "speechmark"
 version = "0.7.0"
 description = "A markup language for Speech and Dialogue."
 readme = "README.rst"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 keywords = ["markup"]
 authors = [
@@ -24,5 +24,5 @@ dependencies = [
 
 [tool.black]
 line-length = 96
-target-version = ["py38"]
+target-version = ["py310"]
 
