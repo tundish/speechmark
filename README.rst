@@ -35,7 +35,7 @@ Parsing text programmatically::
     sm = SpeechMark()
     sm.loads(text)
 
-All output is HTML5::
+... produces this HTML5 output::
 
     <blockquote cite="&lt;PHONE.announcing@GUEST,STAFF&gt;">
     <cite data-role="PHONE" data-directives=".announcing@GUEST,STAFF">PHONE</cite>
