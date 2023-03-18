@@ -173,9 +173,10 @@ class SpeechMark:
         end = 0
         for begin, end in blocks:
             cue = cues.get(begin)
+            text = "\n".join(lines[begin:end]).rstrip()
             yield "\n".join(
                 i
-                for i in self.parse_block(cue, lines[begin:end], terminate)
+                for i in self.parse_block(cue, text.splitlines(keepends=False), terminate)
                 if isinstance(i, str)
             )
 
