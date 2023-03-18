@@ -8,7 +8,7 @@ except ImportError:
 
 
 try:
-    __version__ = importlib.metadata.version("nmskit")
+    __version__ = importlib.metadata.version("speechmark")
 except importlib.metadata.PackageNotFoundError:
     __version__ = datetime.date.today().strftime("%Y.%m.%d") + "+local_repository"
 
