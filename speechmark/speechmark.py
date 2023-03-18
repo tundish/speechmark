@@ -44,6 +44,34 @@ From the command line::
 """
 
 class SpeechMark:
+    """
+    ::
+        from speechmark import SpeechMark
+
+        text = '''
+        <PHONE.announcing@GUEST,STAFF> Ring riiing!
+        <GUEST:thinks> I wonder if anyone is going to answer that phone.
+        '''.strip()
+
+        sm = SpeechMark()
+        sm.loads(text)
+
+    ::
+
+        <blockquote cite="&lt;PHONE.announcing@GUEST,STAFF&gt;">
+        <cite data-role="PHONE" data-directives=".announcing@GUEST,STAFF">PHONE</cite>
+        <p>
+         Ring riiing!
+        </p>
+        </blockquote>
+        <blockquote cite="&lt;GUEST:thinks&gt;">
+        <cite data-role="GUEST" data-mode=":thinks">GUEST</cite>
+        <p>
+         I wonder if anyone is going to answer that phone.
+        </p>
+        </blockquote>
+
+    """
     def __init__(
         self,
         lines=[],
