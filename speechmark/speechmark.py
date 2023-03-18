@@ -128,10 +128,10 @@ class SpeechMark:
         self._index = 0
 
     @property
-    def text(self):
+    def text(self) -> str:
         return "\n".join(self.source)
 
-    def cue_element(self, match):
+    def cue_element(self, match: re.Match) -> str:
         details = match.groupdict()
         if not details["role"].strip() and not details["parameters"]:
             return ""
@@ -141,12 +141,12 @@ class SpeechMark:
         )
         return f"<cite{' ' if attrs else ''}{attrs}>{details['role']}</cite>"
 
-    def tag_element(self, match):
+    def tag_element(self, match: re.Match) -> str:
         details = match.groupdict()
         tag = self.tagging.get(details.get("tag"), "")
         return f"<{tag}>{details['text'].translate(self.escape_table)}</{tag}>"
 
-    def link_element(self, match):
+    def link_element(self, match: re.Match) -> str:
         details = match.groupdict()
         href = html.escape(details["link"], quote=True)
         return f"""<a href="{href}">{details['label'].translate(self.escape_table)}</a>"""
@@ -169,6 +169,8 @@ class SpeechMark:
                 sorted(set(cues.keys()).union({0, len(lines)} if terminate else {0}))
             )
         )
+
+        end = 0
         for begin, end in blocks:
             cue = cues.get(begin)
             yield "\n".join(
@@ -190,12 +192,12 @@ class SpeechMark:
         list_type = ""
         paragraph = False
         for n, line in enumerate(lines):
-            if cue and not paragraph:
-                yield '<blockquote cite="{0}">'.format(html.escape(cue.group(), quote=True))
-                yield self.cue_element(cue)
-
-            elif not n:
-                yield "<blockquote>"
+            if n == 0:
+                if cue:
+                    yield '<blockquote cite="{0}">'.format(html.escape(cue.group(), quote=True))
+                    yield self.cue_element(cue)
+                elif not n:
+                    yield "<blockquote>"
 
             if line.lstrip().startswith("#"):
                 yield f"<!-- {line.translate(self.escape_table)} -->"
@@ -258,9 +260,11 @@ class SpeechMark:
                 yield f"</{list_type}>"
             elif paragraph:
                 yield "</p>"
+                paragraph = False
             yield "</blockquote>"
 
-    def loads(self, text: str, marker: str = "\n", **kwargs):
+    def loads(self, text: str, marker: str = "\n", **kwargs) -> str:
+        self.reset()
         result = marker.join(i.strip() for i in self.feed(text, terminate=True))
         return f"{result}{marker}"
 
