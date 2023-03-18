@@ -25,7 +25,7 @@ import textwrap
 import unittest
 
 import speechmark
-from speechmark.speechmark import SpeechMark
+from speechmark import SpeechMark
 from speechmark import tomllib
 
 __doc__ = f"""
