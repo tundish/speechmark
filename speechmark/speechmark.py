@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 # USA
 
+import argparse
 from collections import deque
 import html
 import itertools
@@ -227,8 +228,25 @@ class SpeechMark:
         self._index = 0
 
 
-if __name__ == "__main__":
+def parser():
+    rv = argparse.ArgumentParser(__doc__)
+    return rv
+
+
+def main(args):
     sm = SpeechMark()
     text = sys.stdin.read()
     html5 = sm.loads(text)
     print(html5)
+    return 0
+
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+
+if __name__ == "__main__":
+    run()
