@@ -26,6 +26,7 @@ import itertools
 import operator
 import re
 import sys
+import textwrap
 
 from . import __version__
 
@@ -33,7 +34,7 @@ __doc__ = """"
 
 From the command line::
 
-    echo "Hello World!" | python -m speechmark
+    echo "Hello, World!" | python -m speechmark
 
     <blockquote>
     <p>
@@ -45,7 +46,8 @@ From the command line::
 
 class SpeechMark:
     """
-    ::
+    Parsing text programmatically::
+
         from speechmark import SpeechMark
 
         text = '''
@@ -56,7 +58,7 @@ class SpeechMark:
         sm = SpeechMark()
         sm.loads(text)
 
-    ::
+    All output is HTML5::
 
         <blockquote cite="&lt;PHONE.announcing@GUEST,STAFF&gt;">
         <cite data-role="PHONE" data-directives=".announcing@GUEST,STAFF">PHONE</cite>
@@ -272,7 +274,9 @@ class SpeechMark:
 
 
 def parser():
-    rv = argparse.ArgumentParser(__doc__)
+    rv = argparse.ArgumentParser(
+        usage="\n".join((__doc__, textwrap.dedent(SpeechMark.__doc__)))
+    )
 
     rv.add_argument(
         "--version", action="store_true", default=False,

@@ -1,5 +1,5 @@
 
-:Version: 0.7.0
+:Version: 0.8.0
 :Author: D E Haynes
 
 
@@ -9,6 +9,46 @@ SpeechMark
 SpeechMark is a convention for markup of authored text.
 It is designed for capturing dialogue, attributing speech, and writing screenplay directions.
 This document explains the syntax, and shows how it should be rendered in HTML5.
+
+Python library
+==============
+
+From the command line::
+
+    echo "Hello, World!" | python -m speechmark
+
+    <blockquote>
+    <p>
+    Hello World!
+    </p>
+    </blockquote>
+
+Parsing text programmatically::
+
+    from speechmark import SpeechMark
+
+    text = '''
+    <PHONE.announcing@GUEST,STAFF> Ring riiing!
+    <GUEST:thinks> I wonder if anyone is going to answer that phone.
+    '''.strip()
+
+    sm = SpeechMark()
+    sm.loads(text)
+
+All output is HTML5::
+
+    <blockquote cite="&lt;PHONE.announcing@GUEST,STAFF&gt;">
+    <cite data-role="PHONE" data-directives=".announcing@GUEST,STAFF">PHONE</cite>
+    <p>
+     Ring riiing!
+    </p>
+    </blockquote>
+    <blockquote cite="&lt;GUEST:thinks&gt;">
+    <cite data-role="GUEST" data-mode=":thinks">GUEST</cite>
+    <p>
+     I wonder if anyone is going to answer that phone.
+    </p>
+    </blockquote>
 
 SpeechMark takes inspiration from other markup systems already in common use, eg:
 
@@ -666,4 +706,3 @@ HTML5 output::
             </ol>
             </blockquote>
         
-
