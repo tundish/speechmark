@@ -27,6 +27,8 @@ import operator
 import re
 import sys
 
+from . import __version__
+
 
 class SpeechMark:
     def __init__(
@@ -230,10 +232,17 @@ class SpeechMark:
 
 def parser():
     rv = argparse.ArgumentParser(__doc__)
+
+    rv.add_argument("--version", action="store_true", default=False)
+
     return rv
 
 
 def main(args):
+    if args.version:
+        print(__version__)
+        return 0
+
     sm = SpeechMark()
     text = sys.stdin.read()
     html5 = sm.loads(text)
