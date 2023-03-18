@@ -29,6 +29,19 @@ import sys
 
 from . import __version__
 
+__doc__ = """"
+
+From the command line::
+
+    echo "Hello World!" | python -m speechmark
+
+    <blockquote>
+    <p>
+    Hello World!
+    </p>
+    </blockquote>
+
+"""
 
 class SpeechMark:
     def __init__(
@@ -233,7 +246,10 @@ class SpeechMark:
 def parser():
     rv = argparse.ArgumentParser(__doc__)
 
-    rv.add_argument("--version", action="store_true", default=False)
+    rv.add_argument(
+        "--version", action="store_true", default=False,
+        help="display the package version"
+    )
 
     return rv
 
