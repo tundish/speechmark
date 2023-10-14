@@ -19,7 +19,7 @@ From the command line::
 
     <blockquote>
     <p>
-    Hello World!
+    Hello, World!
     </p>
     </blockquote>
 
