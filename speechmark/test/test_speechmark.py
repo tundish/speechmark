@@ -56,6 +56,20 @@ Head = ("propose", "confirm", "counter", "abandon", "condemn", "declare")
 Hand = ("decline", "suggest", "promise", "disavow", "deliver")
 
 
+class SupportTests(unittest.TestCase):
+
+    def test_elaboration_directive(self):
+        text = """
+        <ALAN.elaborating> Maybe now's a good time to ask {BETH.name} a question.
+            1. Ask about the weather
+            2. Ask about pets
+            3. Ask about football
+        """
+        sm = SpeechMark()
+        rv = sm.loads(text)
+        self.assertIn("Ask about football", rv)
+
+
 class Syntax(unittest.TestCase):
     """
     SpeechMark
