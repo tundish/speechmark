@@ -57,7 +57,7 @@ SpeechMark takes inspiration from other markup systems already in common use, eg
 
 I tried both these systems prior to creating SpeechMark. I found I needed some features which
 Markdown didn't have. RST proved to be overkill for this particular purpose, and the document model
-became cumbersome to me.
+became an encumbrance.
 
 Philosophy
 ==========
