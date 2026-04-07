@@ -140,7 +140,7 @@ Using digits and a dot before text will give you an ordered list::
 Cues
 ----
 
-A cue marks the start of a new block of dialogue. Is is denoted by angled brackets::
+A cue marks the start of a new block of dialogue. It is denoted by angled brackets::
 
     <>  Once upon a time, far far away...
 

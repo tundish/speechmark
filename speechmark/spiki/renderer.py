@@ -113,11 +113,9 @@ class Renderer:
 
         self.state.config.maps.pop(0)
 
-    def serialize(self, template: dict = None, buf: list = None) -> str:
+    def serialize(self, template: dict = None) -> str:
         self.template.update(template or dict())
-        buf = buf or list()
         context = copy.deepcopy(self.template)
         tree = context.pop("doc", dict())
-        for text in self.walk(tree, path=[], context=context):
-            buf.append(text)
-        return "\n".join(filter(None, buf))
+        stream = self.walk(tree, path=[], context=context)
+        return "\n".join(filter(None, stream))
