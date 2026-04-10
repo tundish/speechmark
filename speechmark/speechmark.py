@@ -111,8 +111,8 @@ class SpeechMark:
 
         self.link_matcher = re.compile(
             r"""
-        \[(?P<label>[^\]]*?)\]       # Non-greedy, permissive
-        \((?P<link>[^\)]*?)\)        # Non-greedy, permissive
+        \[(?P<label>[^\]]*?)\]      # Non-greedy, permissive
+        \((?P<link>[^\)]*?)\)       # Non-greedy, permissive
         """,
             re.VERBOSE,
         )
